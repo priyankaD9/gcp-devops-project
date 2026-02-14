@@ -1,3 +1,6 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 steps:
   - name: 'docker'
     args:
@@ -5,6 +8,6 @@ steps:
       - '-t'
       - 'gcr.io/$PROJECT_ID/gcpdevops'
       - '.'
+
 images:
   - 'gcr.io/$PROJECT_ID/gcpdevops'
-

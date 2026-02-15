@@ -1,35 +1,30 @@
-# cloudbuild.yaml
-options:
-  logging: CLOUD_LOGGING_ONLY  # Ensures logs go to Cloud Logging
-  machineType: 'E2_HIGHCPU_8' # Optional: bigger machine for Docker build
-
 steps:
-  # Step 1: Authenticate Docker to Google Artifact Registry
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
-    entrypoint: 'bash'
+  # 1) Build Docker image
+  - id: "Build Docker Image"
+    name: "gcr.io/cloud-builders/docker"
     args:
-      - '-c'
-      - |
-        gcloud auth configure-docker --quiet
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/gcpdevops:latest"
+      - "."
 
-  # Step 2: Build Docker image
-  - name: 'gcr.io/cloud-builders/docker:20.10.24'
+  # 2) Push Docker image
+  - id: "Push Docker Image"
+    name: "gcr.io/cloud-builders/docker"
     args:
-      - 'build'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/gcpdevops:latest'
-      - '.'
+      - "push"
+      - "gcr.io/$PROJECT_ID/gcpdevops:latest"
 
-  # Step 3: Push Docker image to GCP Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker:20.10.24'
+  # 3) Deploy to GKE using manifest
+  - id: "Deploy to GKE"
+    name: "gcr.io/cloud-builders/gke-deploy"
     args:
-      - 'push'
-      - 'gcr.io/$PROJECT_ID/gcpdevops:latest'
+      - "run"
+      - "--filename=gke.yaml"
+      - "--image=gcr.io/$PROJECT_ID/gcpdevops:latest"
+      - "--location=us-central1-a"
+      - "--cluster=gcp-devops-project"
+      - "--namespace=gcp-devops-prod"
 
 images:
-  - 'gcr.io/$PROJECT_ID/gcpdevops:latest'
-
-# Optional: specify a dedicated service account
-# Make sure this service account has:
-# Artifact Registry Writer, Logs Writer, Cloud Build Editor, Storage Admin
-# serviceAccount: cloud-build-sa@project-da98485c-6f18-42a7-8dd.iam.gserviceaccount.com
+  - "gcr.io/$PROJECT_ID/gcpdevops:latest"

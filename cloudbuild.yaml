@@ -1,5 +1,8 @@
+options:
+  logging: CLOUD_LOGGING_ONLY  # fixes the service account logs error
+
 steps:
-  # 1) Build Docker image
+  # 1️⃣ Build Docker image
   - id: "Build Docker Image"
     name: "gcr.io/cloud-builders/docker"
     args:
@@ -8,14 +11,14 @@ steps:
       - "gcr.io/$PROJECT_ID/gcpdevops:latest"
       - "."
 
-  # 2) Push Docker image
+  # 2️⃣ Push Docker image
   - id: "Push Docker Image"
     name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
       - "gcr.io/$PROJECT_ID/gcpdevops:latest"
 
-  # 3) Deploy to GKE using manifest
+  # 3️⃣ Deploy to GKE
   - id: "Deploy to GKE"
     name: "gcr.io/cloud-builders/gke-deploy"
     args:
@@ -28,5 +31,3 @@ steps:
 
 images:
   - "gcr.io/$PROJECT_ID/gcpdevops:latest"
-
-

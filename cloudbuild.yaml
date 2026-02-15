@@ -1,9 +1,35 @@
+# cloudbuild.yaml
 options:
-  logging: CLOUD_LOGGING_ONLY
+  logging: CLOUD_LOGGING_ONLY  # Ensures logs go to Cloud Logging
+  machineType: 'E2_HIGHCPU_8' # Optional: bigger machine for Docker build
 
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gcpdevops', '.']
+  # Step 1: Authenticate Docker to Google Artifact Registry
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud auth configure-docker --quiet
+
+  # Step 2: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker:20.10.24'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/gcpdevops:latest'
+      - '.'
+
+  # Step 3: Push Docker image to GCP Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker:20.10.24'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/gcpdevops:latest'
 
 images:
-  - 'gcr.io/$PROJECT_ID
+  - 'gcr.io/$PROJECT_ID/gcpdevops:latest'
+
+# Optional: specify a dedicated service account
+# Make sure this service account has:
+# Artifact Registry Writer, Logs Writer, Cloud Build Editor, Storage Admin
+# serviceAccount: cloud-build-sa@project-da98485c-6f18-42a7-8dd.iam.gserviceaccount.com

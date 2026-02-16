@@ -8,7 +8,7 @@ steps:
     args:
       - "build"
       - "-t"
-      - "gcr.io/project-da98485c-6f18-42a7-8dd/gcpdevops:latest"
+      - "gcr.io/$PROJECT_ID/gcpdevops:latest"  # Use $PROJECT_ID dynamically
       - "."
 
   # 2️⃣ Push Docker image to GCR
@@ -16,7 +16,7 @@ steps:
     name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
-      - "gcr.io/project-da98485c-6f18-42a7-8dd/gcpdevops:latest"
+      - "gcr.io/$PROJECT_ID/gcpdevops:latest"
 
   # 3️⃣ Deploy to GKE using gke.yaml
   - id: "Deploy to GKE"
@@ -24,10 +24,10 @@ steps:
     args:
       - "run"
       - "--filename=gke.yaml"
-      - "--image=gcr.io/project-da98485c-6f18-42a7-8dd/gcpdevops:latest"
+      - "--image=gcr.io/$PROJECT_ID/gcpdevops:latest"  # Use $PROJECT_ID dynamically
       - "--location=us-central1-a"
       - "--cluster=gcp-devops-project"
       - "--namespace=gcp-devops-prod"
 
 images:
-  - "gcr.io/project-da98485c-6f18-42a7-8dd/gcpdevops:latest"
+  - "gcr.io/$PROJECT_ID/gcpdevops:latest"  # Use $PROJECT_ID dynamically

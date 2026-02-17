@@ -14,22 +14,24 @@ steps:
       - gcr.io/$PROJECT_ID/gcpdevops:latest
       - "."
 
-  # Step 2: Push Docker image
+  # Step 2: Push Docker image to Google Container Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
       - gcr.io/$PROJECT_ID/gcpdevops:latest
 
-  # Step 3: Deploy using kubectl (replaces IMAGE)
+  # Step 3: Deploy to GKE (replace IMAGE placeholder automatically)
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
     entrypoint: bash
     args:
       - -c
       - |
-        # Connect to your GKE cluster
         gcloud container clusters get-credentials gcp-devops-project --zone us-central1-a
-        
-        # Update deployment with the correct image
         kubectl set image deployment/gcp-devops-gke \
         gcp-devops-gke=gcr.io/$PROJECT_ID/gcpdevops:latest \
         -n gcp-devops-prod
+
+images:
+  - "gcr.io/$PROJECT_ID/gcpdevops:latest"
+options:
+  logging: CLOUD_LOGGING_ONLY

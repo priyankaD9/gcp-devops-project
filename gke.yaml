@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: gcp-devops-gke
-          image: IMAGE   
+          image: IMAGE   # <-- placeholder, will be replaced in Cloud Build
           ports:
             - containerPort: 5000
           env:

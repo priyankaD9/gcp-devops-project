@@ -4,21 +4,45 @@ metadata:
   name: gcp-devops-gke
   namespace: gcp-devops-prod
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: gcp
+      app: gcp-devops-gke
   template:
     metadata:
       labels:
-        app: gcp
+        app: gcp-devops-gke
     spec:
       containers:
         - name: gcp-devops-gke
-          image: gcr.io/PROJECT_ID/gcpdevops:latest
+          image: us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest
           ports:
             - containerPort: 5000
-          env:
-            - name: PORT
-              value: "5000"
 
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gcp-devops-service
+  namespace: gcp-devops-prod
+spec:
+  selector:
+    app: gcp-devops-gke
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5000

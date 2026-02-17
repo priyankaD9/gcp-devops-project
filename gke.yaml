@@ -4,20 +4,17 @@ metadata:
   name: gcp-devops-gke
   namespace: gcp-devops-prod
 spec:
-  replicas: 1
+  replicas: 2                 # ensures high availability
   selector:
     matchLabels:
-      app: gcp
+      app: gcp-devops
   template:
     metadata:
       labels:
-        app: gcp
+        app: gcp-devops
     spec:
       containers:
-        - name: gcp-devops-gke
-          image: IMAGE   # placeholder, replaced by cloudbuild.yaml
-          ports:
-            - containerPort: 5000
-          env:
-            - name: PORT
-              value: "5000"
+      - name: gcpdevops            # must match the container name in cloudbuild.yaml if using set-image
+        image: gcr.io/project-da98485c-6f18-42a7-8dd/gcpdevops:latest  # replace with your lowercase project ID
+        ports:
+        - containerPort: 80

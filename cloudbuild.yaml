@@ -20,18 +20,17 @@ steps:
       - push
       - gcr.io/$PROJECT_ID/gcpdevops:latest
 
-  # Step 3: Deploy to GKE (replace IMAGE placeholder automatically)
+  # Step 3: Deploy to GKE using updated gke.yaml
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
     entrypoint: bash
     args:
       - -c
       - |
         gcloud container clusters get-credentials gcp-devops-project --zone us-central1-a
-        kubectl set image deployment/gcp-devops-gke \
-        gcp-devops-gke=gcr.io/$PROJECT_ID/gcpdevops:latest \
-        -n gcp-devops-prod
+        kubectl apply -f gke.yaml -n gcp-devops-prod
 
 images:
   - "gcr.io/$PROJECT_ID/gcpdevops:latest"
+
 options:
   logging: CLOUD_LOGGING_ONLY

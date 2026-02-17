@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: gcp-devops-gke
-          image: IMAGE   # <-- keep as is, gke-deploy will replace this
+          image: IMAGE   
           ports:
             - containerPort: 5000
           env:

@@ -2,29 +2,45 @@ steps:
 - id: "Build Docker Image"
   name: "gcr.io/cloud-builders/docker"
   args:
-  - "build"
-  - "-t"
-  - "us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
-  - "."
+    - "build"
+    - "-t"
+    - "us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
+    - "."
 
 - id: "Push Docker Image"
   name: "gcr.io/cloud-builders/docker"
   args:
-  - "push"
-  - "us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
+    - "push"
+    - "us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
 
 - id: "Deploy to GKE"
   name: "gcr.io/cloud-builders/gke-deploy"
   args:
-  - "run"
-  - "--filename=gke.yaml"
-  - "--image=us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
-  - "--location=us-central1-a"
-  - "--cluster=gcp-devops-project"
-  - "--namespace=gcp-devops-prod"
+    - "run"
+    - "--filename=gke.yaml"
+    - "--image=us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
+    - "--location=us-central1-a"
+    - "--cluster=gcp-devops-project"
+    - "--namespace=gcp-devops-prod"
+
+- id: "Authenticate Docker"
+  name: "gcr.io/google.com/cloudsdktool/cloud-sdk:latest"
+  entrypoint: bash
+  args:
+    - -c
+    - gcloud auth configure-docker --quiet
+
+- id: "Deploy via kubectl"
+  name: "gcr.io/google.com/cloudsdktool/cloud-sdk:latest"
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      gcloud container clusters get-credentials gcp-devops-project --zone us-central1-a
+      kubectl apply -f gke.yaml -n gcp-devops-prod
 
 images:
-- "us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
+  - "us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest"
 
 options:
   logging: CLOUD_LOGGING_ONLY

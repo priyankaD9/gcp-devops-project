@@ -14,24 +14,22 @@ spec:
         app: gcp-devops-gke
     spec:
       containers:
-        - name: gcp-devops-gke
-          image: us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest
-          ports:
-            - containerPort: 5000
-
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 5000
-            initialDelaySeconds: 10
-            periodSeconds: 5
-
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 5000
-            initialDelaySeconds: 20
-            periodSeconds: 10
+      - name: gcp-devops-gke
+        image: us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest
+        ports:
+        - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 20
+          periodSeconds: 10
 
 ---
 apiVersion: v1

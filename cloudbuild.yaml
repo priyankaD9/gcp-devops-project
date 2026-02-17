@@ -20,5 +20,18 @@ steps:
       - push
       - gcr.io/$PROJECT_ID/gcpdevops:latest
 
+  # Step 3: Deploy to GKE using gke-deploy
+  - name: gcr.io/cloud-builders/gke-deploy
+    args:
+      - run
+      - "--filename=gke.yaml"
+      - "--image=gcr.io/$PROJECT_ID/gcpdevops:latest"
+      - "--location=us-central1-a"
+      - "--cluster=gcp-devops-project"
+      - "--namespace=gcp-devops-prod"
+
+images:
+  - "gcr.io/$PROJECT_ID/gcpdevops:latest"
+
 options:
   logging: CLOUD_LOGGING_ONLY

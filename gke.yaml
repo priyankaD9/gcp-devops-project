@@ -4,17 +4,43 @@ metadata:
   name: gcp-devops-gke
   namespace: gcp-devops-prod
 spec:
-  replicas: 2                 # ensures high availability
+  replicas: 2
   selector:
     matchLabels:
-      app: gcp-devops
+      app: gcp-devops-gke
   template:
     metadata:
       labels:
-        app: gcp-devops
+        app: gcp-devops-gke
     spec:
       containers:
-      - name: gcpdevops            # must match the container name in cloudbuild.yaml if using set-image
-        image: gcr.io/project-da98485c-6f18-42a7-8dd/gcpdevops:latest  # replace with your lowercase project ID
+      - name: gcp-devops-gke
+        image: us-central1-docker.pkg.dev/project-da98485c-6f18-42a7-8dd/gcpdevops-repo/gcpdevops:latest
         ports:
-        - containerPort: 80
+        - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 20
+          periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gcp-devops-service
+  namespace: gcp-devops-prod
+spec:
+  selector:
+    app: gcp-devops-gke
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5000

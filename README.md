@@ -2,8 +2,8 @@
 ---
 ## Introduction
 
-****This project demonstrates **end-to-end CI/CD on Google Cloud Platform (GCP)** using **Cloud Build, GKE, Docker, and a Flask Python app**. The setup automates builds, containerization, and deployment to Kubernetes, showcasing modern DevOps workflows.
-****
+**This project demonstrates **end-to-end CI/CD on Google Cloud Platform (GCP)** using **Cloud Build, GKE, Docker, and a Flask Python app**. The setup automates builds, containerization, and deployment to Kubernetes, showcasing modern DevOps workflows.
+**
 **Highlights:**
 - Automated Docker builds & pushes to **Google Container Registry (GCR)**  
 - CI/CD pipeline with **Cloud Build**  

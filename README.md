@@ -2,8 +2,9 @@
 ---
 ## Introduction
 
-**This project demonstrates **end-to-end CI/CD on Google Cloud Platform (GCP)** using **Cloud Build, GKE, Docker, and a Flask Python app**. The setup automates builds, containerization, and deployment to Kubernetes, showcasing modern DevOps workflows.
-**
+This project demonstrates **end-to-end CI/CD on Google Cloud Platform (GCP)** using **Cloud Build, GKE, Docker, and a Flask Python app**. The setup automates builds, containerization, and deployment to Kubernetes, showcasing modern DevOps workflows.
+
+---
 **Highlights:**
 - Automated Docker builds & pushes to **Google Container Registry (GCR)**  
 - CI/CD pipeline with **Cloud Build**  
@@ -22,25 +23,9 @@
 
 ---
 
-### Project Structure
-
-gcp-devops-project/
-├── app.py                  # Flask application
-├── requirements.txt        # Python dependencies
-├── Dockerfile              # Dockerfile for containerization
-├── gke.yaml                # Kubernetes deployment manifest
-├── cloudbuild.yaml         # Cloud Build CI/CD pipeline
-├── README.md               # Project documentation
-├── LICENSE.md              # MIT License
-└── screenshots/            # Folder for screenshots
-    ├── gke-cluster.png
-    └── cloud-build.png
-
+## Contributing
 ---
-
-### Contributing
----
-#### Contributions to this project are welcome! To contribute, please follow these steps:
+### Contributions to this project are welcome! To contribute, please follow these steps:
 1. Fork the repository.
 2. Create a new branch for your feature or bugfix: git checkout -b feature/new-feature
 3. Make your changes and commit them: git commit -m 'Add new feature'
@@ -48,12 +33,12 @@ gcp-devops-project/
 5. Create a pull request to merge your changes into the main repository
 ---
 
-### License
+## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
 ---
 
-### Acknowledgments
+## Acknowledgments
 Mention any libraries, tutorials, or resources that you found helpful during the development of this project.
    

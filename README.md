@@ -35,7 +35,7 @@ This project demonstrates **end-to-end CI/CD on Google Cloud Platform (GCP)** us
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details.
 
 ---
 

@@ -26,11 +26,13 @@ This project demonstrates **end-to-end CI/CD on Google Cloud Platform (GCP)** us
 ## Contributing
 ---
 ### Contributions to this project are welcome! To contribute, please follow these steps:
+
 1. Fork the repository.
-2. Create a new branch for your feature or bugfix: git checkout -b feature/new-feature
-3. Make your changes and commit them: git commit -m 'Add new feature'
-4. Push to your forked repository: git push origin feature/new-feature
-5. Create a pull request to merge your changes into the main repository
+2. Create a new branch for your feature or bugfix: ```git checkout -b feature/new-feature```
+3. Make your changes and commit them:```git commit -m "Add new feature"```
+4. Push to your forked repository:```git push origin feature/new-feature```
+5. Create a Pull Request to merge your changes into the main repository.
+
 ---
 
 ## License
